@@ -1,0 +1,53 @@
+.zstoreTabs {
+	margin: 0;
+	padding: 0;	
+	zoom : 1;
+
+}
+
+.zstoreTabs li {
+	float: left;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.zstoreTabs a {
+	display: block;
+	text-decoration: none;
+	padding: 3px 5px;
+	background-color: rgb(110,138,195);
+	margin-right: 10px;
+	border: 1px solid rgb(153,153,153);
+	margin-bottom: -1px;
+	color:white;
+
+}
+.zstoreTabs .active {
+	border-bottom: 1px solid white;
+	background-color: white;
+	color: rgb(51,72,115);
+	position: relative;
+}
+
+.z_panelContainer {
+	clear: both;
+	margin-bottom: 25px;	
+	border: 1px solid rgb(153,153,153);	
+	background-color: white;
+	padding: 10px;
+	width: 70%;
+	
+}
+
+.zstorePanelclass h2 {
+	color: rgb(57,78,121);
+	text-shadow: none;		
+}
+.zstorePanelclass p {
+	color: black;	
+}
+
+
+
+
+

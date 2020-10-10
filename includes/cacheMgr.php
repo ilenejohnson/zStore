@@ -1,4 +1,5 @@
 <?php
+namespace zstore\manager;
 if (!class_exists ('cacheMgr_Zstore_Basic')) {
 class cacheMgr_Zstore_Basic {
 

@@ -1,4 +1,4 @@
-<?php/*Plugin Name: zStore Manager  BasicPlugin URI: http://ikjweb.comDescription: Manager for Zazzle Store Products.  Allows a Zazzle shopkeeper or Affliate to display Zazzle products on an external website.  You can display the product name, price and description and limit the amount of products shown.  You can also use the cache so that images load faster.  Visit the <a href="options-general.php?page=z_store_basic_slug">Settings Page</a> for more options. Version: 3.2Author: Ilene JohnsonAuthor URI: http://ikjweb.com/Donate Link: http://ikjweb.comUpdate Server:  License: MIT License - http://www.opensource.org/licenses/mit-license.php*/
+<?php/*Plugin Name: zStore Manager  BasicPlugin URI: http://ikjweb.comDescription: Manager for Zazzle Store Products.  Allows a Zazzle shopkeeper or Affliate to display Zazzle products on an external website.  You can display the product name, price and description and limit the amount of products shown.  You can also use the cache so that images load faster.  Visit the <a href="options-general.php?page=z_store_basic_slug">Settings Page</a> for more options. Version: 3.3Requires at least: 5.3Requires PHP 7.2Author: Ilene JohnsonAuthor URI: http://ikjweb.com/Donate Link: http://ikjweb.comUpdate Server:  License: MIT License - https://www.gnu.org/licenses/gpl-2.0.htmlText Domain:  zstore*/namespace zstore\manager;
 define( 'ZAZZLE_BASIC_URL_BASE' , 'zazzle.com');
 define ('ZSTORE_MANAGER', 'zstore_manager');
 require_once 'includes/storedisplay.php';
@@ -87,13 +87,13 @@ class _Zazzle_Store_Manager_Basic
      */
     public function add_zstore_basic_plugin_page()
     {
-        // This page will be under "Settings"
         
-		add_options_page( 'zStore Basic Options',
-							__('zStore Manager Basic','zstore-manager-text-domain' ),
+        
+		add_menu_page( 'zStore Basic Options',
+							__('zStore Manager Basic','zstore' ),
 							'manage_options',
 							'z_store_basic_slug',
-							array( $this, 'care_zstore_basic_admin_page' ) );
+							array( $this, 'care_zstore_basic_admin_page' ) ,'dashicons-store',99);
 		add_action( 'admin_enqueue_scripts', array( $this,'zstore_basic_admin_styles' ));
     }
 	function zstore_basic_admin_styles() {
@@ -126,13 +126,13 @@ class _Zazzle_Store_Manager_Basic
 		
 ?>
         <div class="wrap">
-            <?php screen_icon(); ?>
-            <h2><?php _e('zStore Basic Administration','zstore-manager-text-domain' );?> </h2>         
+          
+            <h2><?php _e('zStore Basic Administration','zstore' );?> </h2>         
             <form id="zStore_admin" name="zStore_admin" method="post" action="options.php">
-		
+		<?php wp_nonce_field( 'zstore_setting_edit', 'zstore_setting' ); ?>
 			<ul class="zstoreTabs">
-				<li><a href="#zPanel1" tabindex="1"><?php _e('User and Store Information','zstore-manager-text-domain' );?></a></li>
-				<li><a href="#zpanel2" tabindex="2"><?php _e('Page Layout','zstore-manager-text-domain' );?></a></li>
+				<li><a href="#zPanel1" tabindex="1"><?php _e('User and Store Information','zstore' );?></a></li>				
+				<li><a href="#zpanel2" tabindex="2"><?php _e('Page Layout','zstore' );?></a></li>
 			</ul>
 			<div class="z_panelContainer">
 			
@@ -192,13 +192,13 @@ class _Zazzle_Store_Manager_Basic
 
         add_settings_section(
             'user_info_settings', // ID
-           __('<h2>User Information </h2>','zstore-manager-text-domain' ) , // Title
+           __('<h2>User Information </h2>','zstore' ) , // Title
             array( $this, 'print_section_info' ), // Callback
             'zstore-basic-setting-admin' // Page
         );  
 		add_settings_section(
             'page_layout_settings', // ID
-           __( '<h2>Page Layout </h2>','zstore-manager-text-domain' ) , // Title
+           __( '<h2>Page Layout </h2>','zstore' ) , // Title
             array( $this, 'print_page_layout' ), // Callback
             'zstore-basic-page-layout-admin' // Page
         );  
@@ -231,7 +231,7 @@ class _Zazzle_Store_Manager_Basic
      * @param array $input Contains all settings fields as array keys
      */
     public function sanitize( $input )
-    {
+    {		if ( 			! isset( $_POST['zstore_setting'] ) 			|| ! wp_verify_nonce( $_POST['zstore_setting'], 'zstore_setting_edit' ) 		) {		 		   print 'Sorry, your nonce did not verify.';		   exit;		 		}
         $new_input = array();
         if( isset( $input['contributorHandle'] ) )
             $new_input['contributorHandle'] = sanitize_text_field( $input['contributorHandle'] );
@@ -309,49 +309,49 @@ class _Zazzle_Store_Manager_Basic
 	
 		add_settings_field(
             'productType', // ID
-           __('Product Type:','zstore-manager-text-domain' ) , // Title 
+           __('Product Type:','zstore' ) , // Title 
             array( $this, 'productType_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'gridCellSize', // ID
-            __('Grid Cell Size:','zstore-manager-text-domain' ) , // Title 
+            __('Grid Cell Size:','zstore' ) , // Title 
             array( $this, 'gridCellSize_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'gridCellSpacing', // ID
-            __('Grid Cell Spacing:','zstore-manager-text-domain' ) , // Title 
+            __('Grid Cell Spacing:','zstore' ) , // Title 
             array( $this, 'gridCellSpacing_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'showHowMany', // ID
-            __('Show How Many:','zstore-manager-text-domain' ) , // Title 
+            __('Show How Many:','zstore' ) , // Title 
             array( $this, 'showHowMany_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'gridCellBgColor', // ID
-            __('Grid Cell Background Color:','zstore-manager-text-domain' ) ,  // Title 
+            __('Grid Cell Background Color:','zstore' ) ,  // Title 
             array( $this, 'gridCellBgColor_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'keyWords', // ID
-            __('Key Words:', 'zstore-manager-text-domain' ) , // Title 
+            __('Key Words:', 'zstore' ) , // Title 
             array( $this, 'keyWords_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'startPage', // ID
-            __('Start Page:','zstore-manager-text-domain' ) , // Title 
+            __('Start Page:','zstore' ) , // Title 
             array( $this, 'startPage_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
@@ -359,21 +359,21 @@ class _Zazzle_Store_Manager_Basic
 		
 		add_settings_field(
             'showPagination', // ID
-            __('Show Pagination:','zstore-manager-text-domain' ) , // Title 
+            __('Show Pagination:','zstore' ) , // Title 
             array( $this, 'showPagination_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'showSorting', // ID
-            __('Show Sorting:', 'zstore-manager-text-domain' ) ,// Title 
+            __('Show Sorting:', 'zstore' ) ,// Title 
             array( $this, 'showSorting_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'defaultSort', // ID
-            __('Sort By:', 'zstore-manager-text-domain' ) ,// Title 
+            __('Sort By:', 'zstore' ) ,// Title 
             array( $this, 'defaultSort_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
@@ -382,35 +382,35 @@ class _Zazzle_Store_Manager_Basic
 		
 		add_settings_field(
             'showProductTitle', // ID
-            __('Show Product Title:','zstore-manager-text-domain' ) ,// Title 
+            __('Show Product Title:','zstore' ) ,// Title 
             array( $this, 'showProductTitle_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         ); 
 		add_settings_field(
             'showProductDescription', // ID
-            __('Show Product Description:','zstore-manager-text-domain' ) , // Title 
+            __('Show Product Description:','zstore' ) , // Title 
             array( $this, 'showProductDescription_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'useShortDescription', // ID
-            __('Use Short Description:','zstore-manager-text-domain' ) , // Title 
+            __('Use Short Description:','zstore' ) , // Title 
             array( $this, 'useShortDescription_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'showByLine', // ID
-            __('Show By Line:','zstore-manager-text-domain' ) , // Title 
+            __('Show By Line:','zstore' ) , // Title 
             array( $this, 'showByLine_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
         );  
 		add_settings_field(
             'showProductPrice', // ID
-            __('Show Product Price:','zstore-manager-text-domain' ) , // Title 
+            __('Show Product Price:','zstore' ) , // Title 
             array( $this, 'showProductPrice_cb' ), // Callback
             'zstore-basic-page-layout-admin', // Page
             'page_layout_settings' // Section           
@@ -425,7 +425,7 @@ class _Zazzle_Store_Manager_Basic
     {
 		add_settings_field(
             'contributorHandle', // ID
-            __('Contributor Handle:','zstore-manager-text-domain' ) , // Title 
+            __('Contributor Handle:','zstore' ) , // Title 
             array( $this, 'contributor_handle_cb' ), // Callback
             'zstore-basic-setting-admin', // Page
             'user_info_settings' // Section           
@@ -433,14 +433,14 @@ class _Zazzle_Store_Manager_Basic
 
         add_settings_field(
             'associateId', 
-            __('Associate Id:','zstore-manager-text-domain' ) ,
+            __('Associate Id:','zstore' ) ,
             array( $this, 'associateId_cb' ), 
             'zstore-basic-setting-admin', 
             'user_info_settings'
         );   
 		add_settings_field(
             'productLineId', 
-          __('Product Line Id:', 'zstore-manager-text-domain' ) ,
+          __('Product Line Id:', 'zstore' ) ,
             array( $this, 'productLineId_cb' ), 
             'zstore-basic-setting-admin', 
             'user_info_settings'
@@ -449,7 +449,7 @@ class _Zazzle_Store_Manager_Basic
 
 		add_settings_field(
             'trackingCode', 
-          __('Tracking Code:', 'zstore-manager-text-domain' ) ,
+          __('Tracking Code:', 'zstore' ) ,
             array( $this, 'trackingCode_cb' ), 
             'zstore-basic-setting-admin', 
             'user_info_settings'
@@ -457,7 +457,7 @@ class _Zazzle_Store_Manager_Basic
 		
 		add_settings_field(
             'newWindow', // ID
-            __('Open Product in New Window :','zstore-manager-text-domain' ) ,  // Title 
+            __('Open Product in New Window :','zstore' ) ,  // Title 
             array( $this, 'newWindow_cb' ), // Callback
             'zstore-basic-setting-admin', // Page
             'user_info_settings', // Section     
@@ -466,7 +466,7 @@ class _Zazzle_Store_Manager_Basic
 
 		add_settings_field(
             'showZoom', // ID
-            __('Show Zoom:','zstore-manager-text-domain' ) ,  // Title 
+            __('Show Zoom:','zstore' ) ,  // Title 
             array( $this, 'showZoom_cb' ), // Callback
             'zstore-basic-setting-admin', // Page
             'user_info_settings', // Section     
@@ -476,14 +476,14 @@ class _Zazzle_Store_Manager_Basic
 		
 		add_settings_field(
             'useCaching', 
-             __('Use Cache:', 'zstore-manager-text-domain' ) ,
+             __('Use Cache:', 'zstore' ) ,
             array( $this, 'useCaching_cb' ), 
             'zstore-basic-setting-admin', 
             'user_info_settings'
         );  
 		add_settings_field(
             'cacheLifetime', 
-            __('Cache Lifetime:', 'zstore-manager-text-domain' ) , 
+            __('Cache Lifetime:', 'zstore' ) , 
             array( $this, 'cacheLifetime_cb' ), 
             'zstore-basic-setting-admin', 
             'user_info_settings',
@@ -491,7 +491,7 @@ class _Zazzle_Store_Manager_Basic
         );   
 		add_settings_field(
             'use_customFeedUrl', // ID
-            __('Use Custom Feed Url:','zstore-manager-text-domain' ) ,  // Title 
+            __('Use Custom Feed Url:','zstore' ) ,  // Title 
             array( $this, 'use_customFeedUrl_cb' ), // Callback
             'zstore-basic-setting-admin', // Page
             'user_info_settings', // Section     
@@ -500,7 +500,7 @@ class _Zazzle_Store_Manager_Basic
 		
 		add_settings_field(
             'customFeedUrl', // ID
-            __('Custom Feed Url:','zstore-manager-text-domain' ) ,  // Title 
+            __('Custom Feed Url:','zstore' ) ,  // Title 
             array( $this, 'customFeedUrl_cb' ), // Callback
             'zstore-basic-setting-admin', // Page
             'user_info_settings', // Section     
@@ -553,11 +553,11 @@ class _Zazzle_Store_Manager_Basic
 	{
 	?>
 		<select name="gridCellSize" id="gridCellSize" class="required" title="Grid Cell Size">
-					<option value="tiny" <?php echo  ($this->options['gridCellSize'] == 'tiny'?'selected': ""); ?>><?php _e('Tiny','zstore-manager-text-domain' );?></option>
-					<option value="small" <?php echo  ($this->options['gridCellSize'] == 'small'?'selected': ""); ?>><?php _e('Small','zstore-manager-text-domain' );?></option>
-					<option value="medium" <?php echo  ($this->options['gridCellSize'] == 'medium'?'selected': ""); ?>><?php _e('Medium','zstore-manager-text-domain' );?></option>
-					<option value="large" <?php echo  ($this->options['gridCellSize'] == 'large'?'selected': ""); ?>><?php _e('Large','zstore-manager-text-domain' );?></option>
-					<option value="huge" <?php echo  ($this->options['gridCellSize'] == 'huge'?'selected': ""); ?>><?php _e('Huge','zstore-manager-text-domain' );?></option>
+					<option value="tiny" <?php echo  ($this->options['gridCellSize'] == 'tiny'?'selected': ""); ?>><?php _e('Tiny','zstore' );?></option>
+					<option value="small" <?php echo  ($this->options['gridCellSize'] == 'small'?'selected': ""); ?>><?php _e('Small','zstore' );?></option>
+					<option value="medium" <?php echo  ($this->options['gridCellSize'] == 'medium'?'selected': ""); ?>><?php _e('Medium','zstore' );?></option>
+					<option value="large" <?php echo  ($this->options['gridCellSize'] == 'large'?'selected': ""); ?>><?php _e('Large','zstore' );?></option>
+					<option value="huge" <?php echo  ($this->options['gridCellSize'] == 'huge'?'selected': ""); ?>><?php _e('Huge','zstore' );?></option>
 					</select>
 					
 	<?php
@@ -782,9 +782,7 @@ class _Zazzle_Store_Manager_Basic
 	
 		$zsmb = new _Zazzle_Store_Manager_Basic();
 
-// Register a Hook
-// This will call the 'activate' function in 'dconstructingMaster' class
-// when the plugin is activated
+
 		
-	register_activation_hook( __FILE__, array( '_Zazzle_Store_Manager_Basic', 'install_zstore_basic' ) );
+	register_activation_hook( __FILE__, array( 'zstore\\manager\\_Zazzle_Store_Manager_Basic', 'install_zstore_basic' ) );
 ?>

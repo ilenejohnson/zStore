@@ -1,5 +1,5 @@
 <?php
-
+namespace zstore\manager;
 /*  Uninstall file for Zstore-Manager-Basic.   Deletes the tables from the database if the plugin is uninstalled and files deleted 
 */
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) )

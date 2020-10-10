@@ -1,8 +1,8 @@
-/* Pagestyle.css  * file for styling the zstore page  *  */  .zStore_gallery figure {  display: inline-block ;  vertical-align: top;  margin-bottom:1em;}.zStore_gallery figure img {  border: 1px solid #666;   padding: 4px;  box-shadow: 2px 2px 4px rgba(0,0,0,.5);}.zStore_gallery figcaption {  font: 1.1em Arial, Helvetica, sans-serif;  text-align: center;  margin: 10px 0 0 0;}.zStore_gallery figcaption p{			margin-bottom:.3em;		overflow:hidden;}.zStore_gallery .figure p {	font-family: Arial, Helvetica, sans-serif;	font-size: 1.1em;	text-align: center;	line-height: normal;}.zStore_gallery figcaption description,.z_productByline, .z_productPrice {		font-size:.8em;			}.z_productByline a{	text-decoration: none;}.z_pagination_top{
+/* Pagestyle.css  * file for styling the zstore page  *  */  .zStore_gallery figure {  display: inline-block ;  vertical-align: top;  margin-bottom:1em;}.zStore_gallery figure img {  border: 1px solid #666;   padding: 4px;  box-shadow: 2px 2px 4px rgba(0,0,0,.5);}.zStore_gallery figcaption {  font: 1.1em Arial, Helvetica, sans-serif;  text-align: center;  margin: 10px 0 0 0;}.zStore_gallery figcaption p{			margin-bottom:.3em;		overflow:hidden;}.zStore_gallery .figure p {	font-family: Arial, Helvetica, sans-serif;	font-size: 1.1em;	text-align: center;	line-height: normal;}.zStore_gallery figcaption description,.z_productByline, .z_productPrice {		font-size:.8em;			}.z_productByline a{	text-decoration: none;}.z_pagination_top, .z_pagination_bottom{
    margin-bottom: 30px !important;
    text-align:left;   padding:2px 20px;
- }
- 
+ }.z_pagination_top{		 padding:2px 20px;	}
+ .z_pagination_bottom{	  padding:50px 20px; }	 
 
 
 /* The pagination arrows (previous/next)*/
